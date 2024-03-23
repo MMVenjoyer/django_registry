@@ -2,6 +2,6 @@
 .vscode
 .DS_Store
 **/*.sqlite3
-.venv
+venv
 __pycache__/
 *.py[cod]
