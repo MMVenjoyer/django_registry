@@ -2,7 +2,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 from establishment.models import Establishment
-from main.settings import AUTH_USER_MODEL
+from user.models import CustomUser
 
 
 class TrainerQueryset(models.QuerySet):
@@ -51,34 +51,17 @@ class TrainerManager(models.Manager):
         return self.get_queryset().get_trainer_by_iin(iin)
     
 
-    def save_trainer(self,
-                    lastname: str,
-                    name: str,
-                    fathername: str,
-                    contact_phone: str,
-                    contact_email: str,
-                    iin: int,
-                    work_place: str):
-        trainer = self.get_or_create(lastname=lastname,
-                              name=name,
-                              fathername=fathername,
-                              contact_phone=contact_phone,
-                              contact_email=contact_email,
-                              iin=iin,
-                              work_place=work_place)
-        return trainer
-    
-
 class Trainer(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     lastname = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     fathername = models.CharField(max_length=255)
     contact_phone = PhoneNumberField(null=False, blank=False, unique=True)
     contact_email = models.EmailField(max_length=254)
     iin = models.IntegerField(null=False, unique=True)
-    photo = models.ImageField() 
-    work_place = models.ForeignKey(Establishment, on_delete = models.CASCADE)
+    photo = models.ImageField()
+    section = models.CharField(choices=Establishment.Section.choices, max_length=255)
+    work_place = models.ForeignKey(Establishment, on_delete = models.CASCADE) # Надо сделать автопостановку учреждения опираясь на id пользователя из запроса
 
     objects = models.Manager()
     trainer_mng = TrainerManager()

@@ -4,7 +4,7 @@ from .models import Establishment
 
 
 class EstablishmentSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
 
     class Meta:

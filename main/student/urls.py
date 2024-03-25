@@ -5,9 +5,9 @@ from .views import StudentApiView
 
 
 router = routers.DefaultRouter()
-router.register(r'api/all', StudentApiView)
+router.register(r'Student', StudentApiView, basename='Student-detail')
 
 
 urlpatterns = [
-    path('Student/', include(router.urls)),
+    path('api/v1/', include(router.urls)),
 ]

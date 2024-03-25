@@ -8,5 +8,8 @@ from .serializers import TrainerSerializer
 
 class TrainerApiView(viewsets.ModelViewSet, APIView):
     permission_classes = [IsAuthenticated]
-    queryset = Trainer.objects.all() # Берем интересующие нас данные из подели при помощи метода
     serializer_class = TrainerSerializer
+
+
+    def get_queryset(self):
+        return Trainer.objects.filter(owner_id=self.request.user.pk)

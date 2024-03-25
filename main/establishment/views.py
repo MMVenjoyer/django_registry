@@ -13,13 +13,12 @@ class EstablishmentApiView(viewsets.ModelViewSet):
 
 
     def get_queryset(self):
-        user_id = self.request.user.pk
-        return Establishment.objects.filter(user_id=user_id)
+        return Establishment.objects.filter(owner_id=self.request.user.pk)
     
 
     def create(self, request, *args, **kwargs):
-        establishment = Establishment.objects.filter(user_id=self.request.user.pk)
-        if bool(establishment):
+        establishment = Establishment.objects.filter(owner_id=self.request.user.pk)
+        if establishment:
             serializer = EstablishmentSerializer(establishment, many=True)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)

@@ -2,7 +2,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 from establishment.models import Establishment
-from main.settings import AUTH_USER_MODEL
+from user.models import CustomUser
 
 
 class StudentQueryset(models.QuerySet):
@@ -52,15 +52,16 @@ class StudentManager(models.Manager):
     
 
 class Student(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     lastname = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     fathername = models.CharField(max_length=255)
     contact_phone = PhoneNumberField(null=False, blank=False, unique=True)
     contact_email = models.EmailField(max_length=254)
     iin = models.IntegerField(null=False, unique=True)
-    photo = models.ImageField() 
-    study_place = models.OneToOneField(Establishment, on_delete = models.CASCADE)
+    photo = models.ImageField()
+    section = models.CharField(choices=Establishment.Section.choices, max_length=255)
+    study_place = models.ForeignKey(Establishment, on_delete = models.CASCADE) # Надо сделать автопостановку учреждения опираясь на id пользователя из запроса
 
     objects = models.Manager()
     student_mng = StudentManager()

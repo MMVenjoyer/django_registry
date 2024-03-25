@@ -5,9 +5,9 @@ from .views import TrainerApiView
 
 
 router = routers.DefaultRouter()
-router.register(r'api/all', TrainerApiView)
+router.register(r'Trainer', TrainerApiView, basename='Trainer-detail')
 
 
 urlpatterns = [
-    path('Trainer/', include(router.urls)),
+    path('api/v1/', include(router.urls)),
 ]
