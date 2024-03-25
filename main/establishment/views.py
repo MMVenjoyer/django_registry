@@ -3,13 +3,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 
+from main.permissions import IsVerified
+
 from .models import Establishment
 from .serializers import EstablishmentSerializer
 
 
 class EstablishmentApiView(viewsets.ModelViewSet):
     serializer_class = EstablishmentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsVerified]
 
 
     def get_queryset(self):
